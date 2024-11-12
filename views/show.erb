@@ -1,0 +1,37 @@
+<% if @error %>
+  <div class="alert alert-danger" role="alert">
+    <%= @error %>
+  </div>
+<% end %>
+
+<div class="card mb-4">
+  <div class="card-body text-center">
+    <h5 class="card-title">Word: <%= @game.word_with_guesses %></h5>
+    <p class="card-text">Correct guesses: <%= @game.guesses %></p>
+    <p class="card-text">Wrong guesses: <%= @game.wrong_guesses %></p>
+  </div>
+</div>
+
+<form action="/guess" method="post" class="text-center">
+  <div class="form-group">
+    <input type="text" name="letter" class="form-control mx-auto" maxlength="1" placeholder="Guess a letter" required style="width: 200px;">
+  </div>
+  <button type="submit" class="btn btn-primary" <% if @game_status != :play %>disabled<% end %>>Guess</button>
+</form>
+
+<% if @message %>
+  <div class="alert alert-info mt-3" role="alert">
+    <%= @message %>
+  </div>
+<% end %>
+
+<% case @game.check_win_or_lose %>
+<% when :win %>
+    <form action="/try_again" method="post" class="mt-2">
+      <button type="submit" class="btn btn-success">Try Again</button>
+    </form>
+<% when :lose %>
+   <form action="/try_again" method="post" class="mt-2">
+      <button type="submit" class="btn btn-success">Try Again</button>
+    </form>
+<% end %>
